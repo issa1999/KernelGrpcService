@@ -1,0 +1,26 @@
+syntax="proto3";
+
+message REQUEST{
+    string message = 1;
+}
+message REPLY {
+    string message = 1;
+}
+message KERNEL_OBJECT {
+    repeated bytes chunk = 1;
+}
+service SETTER {
+    rpc REMOVE_MODULE(REQUEST) returns (REPLY){}
+    rpc MODPROBE(REQUEST) returns(REPLY){}
+    rpc DEPLOY_MODULE(REQUEST) returns(REPLY){}
+    rpc INSTALL_KERNEL_OBJECT(KERNEL_OBJECT) returns(REPLY){}
+}
+
+
+/**
+service SETTER{
+    rpc REMOVE_MODULE(MODULE) returns (google.protobuf.Empty){}
+    rpc MODPROBE(KernelObject) returns (google.protobuf.Empty){}
+    rpc DEPLOY_KERNEL_MODULE(KernelObject) returns(google.protobuf.Empty){}
+}
+**/
