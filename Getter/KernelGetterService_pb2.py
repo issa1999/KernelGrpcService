@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19KernelGetterService.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x16\n\x06MODULE\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t2\xbf\x02\n\x12GETTER_INFORMATION\x12*\n\x05UNAME\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x12\x1f\n\x07MODINFO\x12\x07.MODULE\x1a\x07.MODULE\"\x00\x30\x01\x12\x33\n\x0e\x43URRENT_CONFIG\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x12\x36\n\x0fRUNNING_MODULES\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x30\x01\x12\x30\n\x0b\x41LL_MODULES\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x12=\n\x16\x41LL_USER_SPACE_OBJECTS\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x30\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19KernelGetterService.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x16\n\x06MODULE\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t2\xc1\x02\n\x12GETTER_INFORMATION\x12*\n\x05UNAME\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x12\x1f\n\x07MODINFO\x12\x07.MODULE\x1a\x07.MODULE\"\x00\x30\x01\x12\x33\n\x0e\x43URRENT_CONFIG\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x12\x36\n\x0fRUNNING_MODULES\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x30\x01\x12\x32\n\x0b\x41LL_MODULES\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x30\x01\x12=\n\x16\x41LL_USER_SPACE_OBJECTS\x12\x16.google.protobuf.Empty\x1a\x07.MODULE\"\x00\x30\x01\x62\x06proto3')
 
 
 
@@ -34,5 +34,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _MODULE._serialized_start=58
   _MODULE._serialized_end=80
   _GETTER_INFORMATION._serialized_start=83
-  _GETTER_INFORMATION._serialized_end=402
+  _GETTER_INFORMATION._serialized_end=404
 # @@protoc_insertion_point(module_scope)

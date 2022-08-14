@@ -9,6 +9,6 @@ service GETTER_INFORMATION{
     rpc MODINFO(MODULE) returns (stream MODULE){}
     rpc CURRENT_CONFIG(google.protobuf.Empty) returns (MODULE){}
     rpc RUNNING_MODULES(google.protobuf.Empty) returns (stream MODULE){}
-    rpc ALL_MODULES(google.protobuf.Empty) returns (MODULE){}
+    rpc ALL_MODULES(google.protobuf.Empty) returns (stream MODULE){}
     rpc ALL_USER_SPACE_OBJECTS(google.protobuf.Empty) returns (stream MODULE){}
 }

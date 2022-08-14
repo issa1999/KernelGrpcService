@@ -1,3 +1,4 @@
+from email import message
 import Getter.KernelGetterService_pb2 as pb2
 import Getter.KernelGetterService_pb2_grpc as grpc_pb2
 import Setter.KernelSetterService_pb2 as Setter_pb2
@@ -25,41 +26,49 @@ def run():
                 print(modinfo_reply)
 
         elif choice == 3: # display all kernel modules
-            all_modules_request = pb2.MODULE()
-            all_modules_reply = stub.ALL_MODULES(all_modules_request)
-            for i in all_modules_reply:
-                print(all_modules_reply)
+            all_module_request = pb2.MODULE()
+            all_module_reply = stub.ALL_MODULES(all_module_request)
+            for module in all_module_reply : 
+                print(module)
+          #  all_modules_request = pb2.MODULE()
+          #  all_modules_reply = stub.ALL_MODULES(all_modules_request)
+          #  for i in all_modules_reply:
+          #      print(all_modules_reply)
         elif choice == 4: # display all running modules found in the file /proc/modules
-            print("current running modules are : \n")
-            running_modules_request = pb2.MODULE()
-            running_modules_replies = stub.RUNNING_MODULES(running_modules_request)
-            for run_mod in running_modules_replies:
+            print("current running modules are : \n") 
+            running_modules_request = pb2.MODULE()  #create a Module object for the request
+            running_modules_replies = stub.RUNNING_MODULES(running_modules_request) # creating a list for the running modules
+            for run_mod in running_modules_replies: # iterate the return list and print the results
                 print(run_mod)
         elif choice == 5:
-            all_kernel_object_request = pb2.MODULE()
-            all_kernel_object_results = stub.ALL_USER_SPACE_OBJECTS(all_kernel_object_request)
-            for ko_obj in all_kernel_object_results:
+            all_kernel_object_request = pb2.MODULE() # create a module object for the request 
+            all_kernel_object_results = stub.ALL_USER_SPACE_OBJECTS(all_kernel_object_request) # create a list for the result ( result pf execution of the function on the server)
+            for ko_obj in all_kernel_object_results: # iterate the result and print them
                 print(ko_obj)
            # module_to_modprobe = input("Enter the module name :")
            # module_to_modprobe_request = Setter_pb2.REQUEST(message = module_to_modprobe)
            # module_to_modprobe_reply = stubb.MODPROBE(module_to_modprobe_request)
            # print(module_to_modprobe_reply)
            # print(module_to_modprobe)
-        elif choice == 9:
-            module_to_load = input("Enter a module name")
-            module_to_load_req = Setter_pb2.REQUEST(message = module_to_load)
-            module_to_load_res = stubb.MODPROBE(module_to_load_req)
-            print(module_to_load_res)
+        elif choice == 9:   
+            module_to_load = input("Enter a module name") # the module to load
+            module_to_load_req = Setter_pb2.REQUEST(message = module_to_load) # create a module pbj to announce to the server the name of the module to load
+            module_to_load_res = stubb.MODPROBE(module_to_load_req) # execute the function on the module to load and save the results
+            print(module_to_load_res) # print the result
         elif choice ==6:
-            module_to_unload = input("Enter the module name")
-            module_to_unload_req = Setter_pb2.REQUEST(message = module_to_unload)
-            module_to_unload_res = stubb.REMOVE_MODULE(module_to_unload_req)
-            print(module_to_unload_res)
+            module_to_unload = input("Enter the module name") # the module to unload
+            module_to_unload_req = Setter_pb2.REQUEST(message = module_to_unload) # tell the server which module to unload
+            module_to_unload_res = stubb.REMOVE_MODULE(module_to_unload_req) # execute the unload function on the server 
+            print(module_to_unload_res) # print the result message 
+        elif choice == 7:
+            module_to_deploy = input("PLease enter the KO file path")
+            module_to_deploy_req = Setter_pb2.REQUEST(message = module_to_deploy)
+            module_to_deploy_rep = stubb.DEPLOY_MODULE(module_to_deploy_req)
+            print(module_to_deploy_rep)
 
 
 
+if __name__=="__main__":
+    run()
 
-
-
-
-run()
+ 

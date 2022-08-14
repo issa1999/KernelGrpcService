@@ -35,7 +35,7 @@ class GETTER_INFORMATIONStub(object):
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=KernelGetterService__pb2.MODULE.FromString,
                 )
-        self.ALL_MODULES = channel.unary_unary(
+        self.ALL_MODULES = channel.unary_stream(
                 '/GETTER_INFORMATION/ALL_MODULES',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=KernelGetterService__pb2.MODULE.FromString,
@@ -109,7 +109,7 @@ def add_GETTER_INFORMATIONServicer_to_server(servicer, server):
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=KernelGetterService__pb2.MODULE.SerializeToString,
             ),
-            'ALL_MODULES': grpc.unary_unary_rpc_method_handler(
+            'ALL_MODULES': grpc.unary_stream_rpc_method_handler(
                     servicer.ALL_MODULES,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=KernelGetterService__pb2.MODULE.SerializeToString,
@@ -208,7 +208,7 @@ class GETTER_INFORMATION(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/GETTER_INFORMATION/ALL_MODULES',
+        return grpc.experimental.unary_stream(request, target, '/GETTER_INFORMATION/ALL_MODULES',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             KernelGetterService__pb2.MODULE.FromString,
             options, channel_credentials,

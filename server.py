@@ -53,9 +53,10 @@ class GetterService(grpc_Getter_pb2.GETTER_INFORMATIONServicer):
  #   -3                                                     #
  ############################################################
   def ALL_MODULES(self, request, context): # Displaying all kernel modules
-    resultat=Getter_pb2.MODULE() # defining a cariable of type MODULE
     k = kmodule.lsmod() # generating a list of server's kernel modules
     for i in k :    # iterating over this list
+      resultat=Getter_pb2.MODULE() # defining a cariable of type MODULE
+
       resultat.data = i #assign each value to a return value
       yield resultat  # return the value 
     
@@ -94,7 +95,7 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
  ############################################################
  #                                                          #
  # Uname Modprobe(module)                                   #
- #  -5                                                      #
+ #  -6                                                      #
  ############################################################
 
   def MODPROBE(self, request, context): # modprobe command used to load a kernel module
@@ -103,14 +104,34 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
     modeprob_reply = Setter_pb2.REPLY() # preparing the result message
     modeprob_reply.message = f"{request.message}"
     return modeprob_reply
+ ############################################################
+ #                                                          #
+ # rmmod -f (module)                                        #
+ #  -7                                                      #
+ ############################################################
 
   def REMOVE_MODULE(self, request, context): # Unloading linux kernel module from the kernel using the modprobe command
     print("The module will be  "+ str(request.message) + " removed") 
     os.system(f"modprobe -r {request.message}") # executing the command to remove the module
     modeprob_reply = Setter_pb2.REPLY() # creating a reply object type REPLY
     #modeprob_reply.message = f"{os.system('modprobe -r --first-time {request.message}')}" # assigning a verification message to the result message
-    modeprob_reply.message = str(os.system("modprobe -r --first-time " + str(request.message))) # assigning a verification message to the result message
+    modeprob_reply.message = str(os.system("sudo rmmod -f  " + str(request.message))) # assigning a verification message to the result message
     return modeprob_reply
+ ############################################################
+ #                                                          #
+ # insmod  (module)                                         #
+ #  -8                                                      #
+ ############################################################
+
+  def DEPLOY_MODULE(self, request, context):
+    print("the .ko file is "+request.module_to_deploy)
+   # deployed = km.modprobe(request.module_to_deploy)
+    deployed_reply = Setter_pb2.REPLY()
+    deployed_reply.message = str(os.system("sudo insmod" + str(request.message)))
+    return deployed_reply
+    
+    
+
   
     
 
@@ -124,7 +145,6 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
 ################################################################
 #################    RUNNING THE SERVER   ######################
 ################################################################
-
 def serve():
   server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
   grpc_Getter_pb2.add_GETTER_INFORMATIONServicer_to_server(GetterService(),server)
