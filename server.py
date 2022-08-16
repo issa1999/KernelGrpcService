@@ -113,8 +113,8 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
   def MODPROBE(self, request, context): # modprobe command used to load a kernel module
     print("The module is "+ str(request.message) + " loading")
     
-    #os.system(f"modprobe {request.message}")  # executiing the command on the recieved module name 
-    km.modprobe(str(request.messsage))
+    os.system(f"modprobe {request.message}")  # executing the command on the recieved module name 
+   # km.modprobe(str(request.messsage))
     modeprob_reply = Setter_pb2.REPLY() # preparing the result message
     modeprob_reply.message = str(request.message)
     return modeprob_reply
@@ -129,8 +129,8 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
     #os.system(f"modprobe -r {request.message}") # executing the command to remove the module
     modeprob_reply = Setter_pb2.REPLY() # creating a reply object type REPLY
     #modeprob_reply.message = f"{os.system('modprobe -r --first-time {request.message}')}" # assigning a verification message to the result message
-
-    modeprob_reply.message = str(km.rmmod(str(request.message)))#str(os.system("sudo -A rmmod -f  " + str(request.message))) # assigning a verification message to the result message
+    #modeprob_reply.message = str(km.rmmod(str(request.message)))
+    modeprob_reply.message = str(os.system(f"sudo -A rmmod -f /lib/modules/{uname.release}/kernel/{request.message}  ")) # assigning a verification message to the result message
     return modeprob_reply
  ############################################################
  #                                                          #
@@ -142,7 +142,7 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
     print("the .ko file is "+request.message) # print the module .ko file path
    # deployed = km.modprobe(request.module_to_deploy)
     deployed_reply = Setter_pb2.REPLY() #create a Reply object 
-    deployed_reply.message = str(os.system("sudo -A insmod /lib/modules/" +str(uname.release) +"/" + str(request.message))) # execute the command and assign the value to the return value
+    deployed_reply.message = str(os.system("sudo -A insmod /lib/modules/" +str(uname.release) +"/kernel/" + str(request.message))) # execute the command and assign the value to the return value
 
     return deployed_reply
     

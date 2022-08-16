@@ -73,12 +73,12 @@ def run():
             module_to_unload_res = stubb.REMOVE_MODULE(module_to_unload_req) # execute the unload function on the server 
             print(module_to_unload_res) # print the result message 
         elif choice == 8: # DEPLOY A MODULE / INSTALL A KO OBJECT
-            module_to_deploy = input("PLease enter the KO file path")
+            module_to_deploy = input("PLease enter the KO file path:  ")
             module_to_deploy_req = Setter_pb2.REQUEST(message = module_to_deploy)
             module_to_deploy_rep = stubb.DEPLOY_MODULE(module_to_deploy_req)
             print(module_to_deploy_rep)
         elif choice == 9:   #LOAD A MODULE
-            module_to_load = input("Enter a module name") # the module to load
+            module_to_load = input("Enter a module name:  ") # the module to load
             module_to_load_req = Setter_pb2.REQUEST(message = module_to_load) # create a module pbj to announce to the server the name of the module to load
             module_to_load_res = stubb.MODPROBE(module_to_load_req) # execute the function on the module to load and save the results
             print(module_to_load_res) # print the result 
