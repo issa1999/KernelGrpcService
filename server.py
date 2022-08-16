@@ -152,7 +152,7 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
 #################    RUNNING THE SERVER   ######################
 ################################################################
 def serve():
-  server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+  server = grpc.server(futures.ThreadPoolExecutor(max_workers=15))
   grpc_Getter_pb2.add_GETTER_INFORMATIONServicer_to_server(GetterService(),server)
   grpc_Setter_pb2.add_SETTERServicer_to_server(SetterService(),server)
 
