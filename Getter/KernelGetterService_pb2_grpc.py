@@ -25,7 +25,7 @@ class GETTER_INFORMATIONStub(object):
                 request_serializer=KernelGetterService__pb2.MODULE.SerializeToString,
                 response_deserializer=KernelGetterService__pb2.MODULE.FromString,
                 )
-        self.CURRENT_CONFIG = channel.unary_unary(
+        self.CURRENT_CONFIG = channel.unary_stream(
                 '/GETTER_INFORMATION/CURRENT_CONFIG',
                 request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
                 response_deserializer=KernelGetterService__pb2.MODULE.FromString,
@@ -99,7 +99,7 @@ def add_GETTER_INFORMATIONServicer_to_server(servicer, server):
                     request_deserializer=KernelGetterService__pb2.MODULE.FromString,
                     response_serializer=KernelGetterService__pb2.MODULE.SerializeToString,
             ),
-            'CURRENT_CONFIG': grpc.unary_unary_rpc_method_handler(
+            'CURRENT_CONFIG': grpc.unary_stream_rpc_method_handler(
                     servicer.CURRENT_CONFIG,
                     request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                     response_serializer=KernelGetterService__pb2.MODULE.SerializeToString,
@@ -174,7 +174,7 @@ class GETTER_INFORMATION(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/GETTER_INFORMATION/CURRENT_CONFIG',
+        return grpc.experimental.unary_stream(request, target, '/GETTER_INFORMATION/CURRENT_CONFIG',
             google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             KernelGetterService__pb2.MODULE.FromString,
             options, channel_credentials,

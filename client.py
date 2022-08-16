@@ -9,7 +9,8 @@ def run():
         stub = grpc_pb2.GETTER_INFORMATIONStub(channel)
         stubb = grpc_Setter_pb2.SETTERStub(channel)
         print("1-Uname\n2-MODINFO\n3-All_Modules\n4-Current Running Modules \n ")
-        print("5-All_Kernel_Object\n6-REMOVE_MODULE\n7-DEPLOY_MODULE\n8-INSTALL_KERNEL_OBJECT\n9-Modprobe ")
+        print("5-Current config")
+        print("6-All_Kernel_Object\n7-REMOVE_MODULE\n8-DEPLOY_MODULE\n9-INSTALL_KERNEL_OBJECT\n10-Modprobe ")
         print("Your choice :")
         choice = int(input())
 
@@ -65,6 +66,12 @@ def run():
             module_to_deploy_req = Setter_pb2.REQUEST(message = module_to_deploy)
             module_to_deploy_rep = stubb.DEPLOY_MODULE(module_to_deploy_req)
             print(module_to_deploy_rep)
+        elif choice == 10:
+            current_config_request = pb2.MODULE()
+            current_config_replies = stub.CURRENT_CONFIG(current_config_request) # creating a list for the running modules
+            for current_config_reply in current_config_replies: # iterate the return list and print the results
+              print(current_config_reply)
+
 
 
 

@@ -8,6 +8,7 @@ import Getter.KernelGetterService_pb2 as Getter_pb2
 import Getter.KernelGetterService_pb2_grpc as grpc_Getter_pb2
 import Setter.KernelSetterService_pb2 as Setter_pb2 
 import Setter.KernelSetterService_pb2_grpc as grpc_Setter_pb2 
+import os
 
 
 # To use uname and Kmod 
@@ -85,13 +86,24 @@ class GetterService(grpc_Getter_pb2.GETTER_INFORMATIONServicer):
       module_result = Getter_pb2.MODULE() # for each element in this list create  Module variable and assign the file name as it's return message
       module_result.data = module 
       yield module_result
+  def CURRENT_CONFIG(self, request, context):
+    print(request) 
+    current_conf_file = open(f"/lib/modules/{uname.release}/build/.config",'r')
+    curr_conf = current_conf_file.readlines()
+    for c in curr_conf:
+
+      resultat = Getter_pb2.MODULE() 
+      resultat.data = c
+      yield resultat
     
 
 ################################################################
 #################    SETTER SERVICE    #########################
 ################################################################
 
+
 class SetterService(grpc_Setter_pb2.SETTERServicer):
+
  ############################################################
  #                                                          #
  # Uname Modprobe(module)                                   #
@@ -100,9 +112,11 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
 
   def MODPROBE(self, request, context): # modprobe command used to load a kernel module
     print("The module is "+ str(request.message) + " loading")
-    os.system(f"modprobe {request.message}")  # executiing the command on the recieved module name 
+    
+    #os.system(f"modprobe {request.message}")  # executiing the command on the recieved module name 
+    km.modprobe(str(request.messsage))
     modeprob_reply = Setter_pb2.REPLY() # preparing the result message
-    modeprob_reply.message = f"{request.message}"
+    modeprob_reply.message = str(request.message)
     return modeprob_reply
  ############################################################
  #                                                          #
@@ -112,10 +126,11 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
 
   def REMOVE_MODULE(self, request, context): # Unloading linux kernel module from the kernel using the modprobe command
     print("The module will be  "+ str(request.message) + " removed") 
-    os.system(f"modprobe -r {request.message}") # executing the command to remove the module
+    #os.system(f"modprobe -r {request.message}") # executing the command to remove the module
     modeprob_reply = Setter_pb2.REPLY() # creating a reply object type REPLY
     #modeprob_reply.message = f"{os.system('modprobe -r --first-time {request.message}')}" # assigning a verification message to the result message
-    modeprob_reply.message = str(os.system("sudo rmmod -f  " + str(request.message))) # assigning a verification message to the result message
+
+    modeprob_reply.message = str(km.rmmod(str(request.message)))#str(os.system("sudo -A rmmod -f  " + str(request.message))) # assigning a verification message to the result message
     return modeprob_reply
  ############################################################
  #                                                          #
@@ -123,24 +138,15 @@ class SetterService(grpc_Setter_pb2.SETTERServicer):
  #  -8                                                      #
  ############################################################
 
-  def DEPLOY_MODULE(self, request, context):
-    print("the .ko file is "+request.module_to_deploy)
+  def DEPLOY_MODULE(self, request, context): #ths function is used to deploy a module
+    print("the .ko file is "+request.message) # print the module .ko file path
    # deployed = km.modprobe(request.module_to_deploy)
-    deployed_reply = Setter_pb2.REPLY()
-    deployed_reply.message = str(os.system("sudo insmod" + str(request.message)))
+    deployed_reply = Setter_pb2.REPLY() #create a Reply object 
+    deployed_reply.message = str(os.system("sudo -A insmod /lib/modules/" +str(uname.release) +"/" + str(request.message))) # execute the command and assign the value to the return value
+
     return deployed_reply
     
-    
-
   
-    
-
-
-    
-
-    
-
-    
     
 ################################################################
 #################    RUNNING THE SERVER   ######################
